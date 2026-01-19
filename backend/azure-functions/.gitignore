@@ -11,3 +11,5 @@ ENV/
 local.settings.json
 .vscode/
 *.log
+
+.python_packages

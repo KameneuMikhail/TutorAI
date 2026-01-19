@@ -69,9 +69,29 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         )
     
     except Exception as e:
-        logging.error(f'Error processing request: {str(e)}', exc_info=True)
+        # Log error with full traceback but only send safe string representation
+        error_message = str(e) if e else "Unknown error"
+        logging.error(f'Error processing request: {error_message}', exc_info=True)
+        
+        # Create safe error response - only use string representation
+        try:
+            error_response = {
+                "error": "Internal server error",
+                "message": error_message
+            }
+            response_body = json.dumps(error_response, ensure_ascii=False)
+        except Exception as json_error:
+            # Fallback if JSON serialization fails
+            response_body = json.dumps({"error": "Internal server error"}, ensure_ascii=False)
+            logging.error(f'Error serializing error response: {str(json_error)}')
+        
         return func.HttpResponse(
-            json.dumps({"error": "Internal server error", "message": str(e)}),
-            mimetype="application/json",
-            status_code=500
+            response_body.encode('utf-8'),
+            mimetype="application/json; charset=utf-8",
+            status_code=500,
+            headers={
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Accept-Language"
+            }
         )
