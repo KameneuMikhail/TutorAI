@@ -204,9 +204,20 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         )
     
     except Exception as e:
-        # Log error with full traceback but only send safe string representation
-        error_message = str(e) if e else "Unknown error"
-        logging.error(f'Error processing request: {error_message}', exc_info=True)
+        # Extract safe error message - only use string representation
+        # Avoid passing exception objects to prevent serialization issues
+        try:
+            error_message = str(e) if e else "Unknown error"
+            # Clean the error message to ensure it's JSON-safe
+            error_message = error_message.replace('\n', ' ').replace('\r', ' ')[:500]
+        except Exception:
+            error_message = "Internal server error occurred"
+        
+        # Log error without exc_info to avoid serialization issues
+        try:
+            logging.error(f'Error processing request: {error_message}')
+        except Exception:
+            pass  # Silently fail logging if it causes issues
         
         # Create safe error response - only use string representation
         try:
@@ -215,18 +226,25 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 "message": error_message
             }
             response_body = json.dumps(error_response, ensure_ascii=False)
-        except Exception as json_error:
+        except Exception:
             # Fallback if JSON serialization fails
             response_body = json.dumps({"error": "Internal server error"}, ensure_ascii=False)
-            logging.error(f'Error serializing error response: {str(json_error)}')
         
-        return func.HttpResponse(
-            response_body.encode('utf-8'),
-            mimetype="application/json; charset=utf-8",
-            status_code=500,
-            headers={
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type, Accept-Language"
-            }
-        )
+        try:
+            return func.HttpResponse(
+                response_body.encode('utf-8'),
+                mimetype="application/json; charset=utf-8",
+                status_code=500,
+                headers={
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type, Accept-Language"
+                }
+            )
+        except Exception:
+            # Ultimate fallback - return minimal safe response
+            return func.HttpResponse(
+                b'{"error":"Internal server error"}',
+                mimetype="application/json; charset=utf-8",
+                status_code=500
+            )
