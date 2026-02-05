@@ -19,9 +19,18 @@ local.settings.json
 
 # Node
 node_modules/
+frontend/node_modules/
+backend/azure-functions/.python_packages/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Frontend build outputs
+frontend/dist/
+frontend/.angular/
+
+# Angular cache
+.angular/cache/
 
 # IDE
 
@@ -41,3 +50,11 @@ Thumbs.db
 # Environment variables
 .env
 .env.local
+
+# VS Code
+.vscode/
+
+# macOS
+.AppleDouble
+.LSOverride
+

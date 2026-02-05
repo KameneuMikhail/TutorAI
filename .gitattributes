@@ -1,0 +1,32 @@
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Declare files that are truly binary and should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.jar binary
+
+# Ensure shell scripts keep LF
+*.sh eol=lf
+
+# Ensure JSON, TS, JS, CSS are text
+*.json text
+*.ts text
+*.js text
+*.css text
+*.html text
+
+# Python
+*.py text
+
+# Mark IDE/editor settings as text
+.vscode/* text
+
+# Do not attempt to diff minified or compiled files
+*.min.js -diff
+dist/ -diff
+frontend/dist/ -diff
