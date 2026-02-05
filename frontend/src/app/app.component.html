@@ -8,4 +8,20 @@
 
   <h1>{{ (translations$ | async)?.title }}</h1>
   <p>{{ (translations$ | async)?.subtitle }}</p>
+
+  <div class="controls">
+    <label for="subject">{{ (translations$ | async)?.subject }}</label>
+    <select id="subject" [value]="selectedSubject" (change)="onSubjectChange($event.target.value)">
+      <option *ngFor="let subject of subjects" [value]="subject">{{ subject }}</option>
+    </select>
+
+    <label for="topics">{{ (translations$ | async)?.topics }}</label>
+    <select id="topics" multiple size="5" (change)="onTopicsChange($event)">
+      <option *ngFor="let topic of topics" [value]="topic">{{ topic }}</option>
+    </select>
+
+    <button type="button" (click)="generateTasks()">{{ (translations$ | async)?.generate_tasks }}</button>
+
+    <p class="action-message" *ngIf="actionClicked">{{ (translations$ | async)?.generate_clicked }}</p>
+  </div>
 </div>

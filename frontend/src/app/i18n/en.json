@@ -1,5 +1,9 @@
 {
   "title": "Tutor AI",
   "subtitle": "An AI assistant for tutors",
-  "select_language": "Select language"
+  "select_language": "Select language",
+  "subject": "Subject",
+  "topics": "Topics",
+  "generate_tasks": "Generate tasks",
+  "generate_clicked": "Generate tasks clicked."
 }

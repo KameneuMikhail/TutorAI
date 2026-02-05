@@ -17,6 +17,11 @@ export class AppComponent {
     { code: 'ru', label: 'Русский' },
     { code: 'en', label: 'English' }
   ];
+  subjects = ['Mathematics', 'Physics', 'History'];
+  topics = ['Algebra', 'Geometry', 'Mechanics', 'Optics', 'World War II'];
+  selectedSubject = this.subjects[0];
+  selectedTopics: string[] = [];
+  actionClicked = false;
 
   constructor(private translationService: TranslationService) {
     this.translations$ = this.translationService.translations$;
@@ -42,6 +47,25 @@ export class AppComponent {
     if (t) {
       document.title = t;
     }
+  }
+
+  onSubjectChange(value: string) {
+    this.selectedSubject = value;
+  }
+
+  onTopicsChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const selected: string[] = [];
+    for (const option of Array.from(target.options)) {
+      if (option.selected) {
+        selected.push(option.value);
+      }
+    }
+    this.selectedTopics = selected;
+  }
+
+  generateTasks() {
+    this.actionClicked = true;
   }
 }
 

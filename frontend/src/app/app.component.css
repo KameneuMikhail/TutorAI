@@ -10,3 +10,23 @@
 .lang-select label {
 	margin-right: 8px;
 }
+
+.controls {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-width: 360px;
+	margin: 16px auto 0;
+	text-align: left;
+}
+
+.controls select,
+.controls button {
+	padding: 8px;
+	font-size: 14px;
+}
+
+.action-message {
+	color: #2b6cb0;
+	margin-top: 4px;
+}
