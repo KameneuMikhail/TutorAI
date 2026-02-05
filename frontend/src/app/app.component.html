@@ -1,3 +1,11 @@
 <div class="container">
-  <h1>Tutor AI</h1>
+  <div class="lang-select">
+    <label for="lang">{{ (translations$ | async)?.select_language }}</label>
+    <select id="lang" [value]="lang" (change)="setLang($event.target.value)">
+      <option *ngFor="let l of langs" [value]="l.code">{{ l.label }}</option>
+    </select>
+  </div>
+
+  <h1>{{ (translations$ | async)?.title }}</h1>
+  <p>{{ (translations$ | async)?.subtitle }}</p>
 </div>

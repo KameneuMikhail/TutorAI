@@ -1,1 +1,12 @@
 .container { text-align:center }
+
+.lang-select {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-bottom: 16px;
+}
+
+.lang-select label {
+	margin-right: 8px;
+}
