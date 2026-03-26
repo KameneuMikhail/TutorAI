@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import en from './i18n/en.json';
+import it from './i18n/it.json';
 import ru from './i18n/ru.json';
 
 @Injectable({ providedIn: 'root' })
@@ -18,11 +19,8 @@ export class TranslationService {
 
   setLang(code: string) {
     this.lang.next(code);
-    if (code === 'ru') {
-      this.current.next(ru as Record<string,string>);
-    } else {
-      this.current.next(en as Record<string,string>);
-    }
+    const map: Record<string, Record<string, string>> = { ru, en, it };
+    this.current.next((map[code] ?? en) as Record<string, string>);
   }
 
   instant(key: string): string {

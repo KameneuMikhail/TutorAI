@@ -15,7 +15,8 @@ export class AppComponent {
   lang = 'ru';
   langs = [
     { code: 'ru', label: 'Русский' },
-    { code: 'en', label: 'English' }
+    { code: 'en', label: 'English' },
+    { code: 'it', label: 'Italiano' }
   ];
   subjects = ['Mathematics', 'Physics', 'History'];
   topics = ['Algebra', 'Geometry', 'Mechanics', 'Optics', 'World War II'];
